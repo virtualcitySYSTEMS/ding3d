@@ -185,7 +185,7 @@ class VersionInfo extends Object {
      * major and minor version <i>must</i> be the same as the specification
      * version.
      */
-    private static final String VERSION_BASE = "1.6.0";
+    private static final String VERSION_BASE = "1.5.4";
 
     /**
      * Boolean flag indicating that the version of the 3D API is

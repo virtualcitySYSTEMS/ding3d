@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
 <jardesc>
-    <jar path="ding3d/build/ding3d.jar"/>
+    <jar path="ding3d/build/ding3d-1.5.4.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/ding3d/ding3d.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
@@ -11,6 +11,14 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/ding3d/README-FIRST.txt"/>
+        <file path="/ding3d/README.md"/>
         <javaElement handleIdentifier="=ding3d/src"/>
+        <file path="/ding3d/THIRDPARTY-LICENSE-DISTANCE.txt"/>
+        <file path="/ding3d/THIRDPARTY-LICENSE-MAINFRAME.txt"/>
+        <file path="/ding3d/COPYRIGHT.txt"/>
+        <file path="/ding3d/THIRDPARTY-LICENSE-FIST.txt"/>
+        <file path="/ding3d/LICENSE-UTILS.txt"/>
+        <file path="/ding3d/LICENSE"/>
     </selectedElements>
 </jardesc>
