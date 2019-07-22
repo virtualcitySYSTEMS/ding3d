@@ -1,0 +1,103 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'distribution'
+}
+
+apply from: 'properties.gradle'
+
+sourceCompatibility = 1.8
+
+group 'ding3d'
+
+
+
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+}
+
+task deleteBuildFolder(type: Delete) {
+	doFirst {
+		println 'Cleaning up build folder before running the build.'
+	}
+    delete buildDir
+}
+compileJava.dependsOn(deleteBuildFolder)
+
+task initVariables {
+
+	
+	jar.archiveName = project.libraryName + '-' + project.libraryVersion + '.jar'
+	
+}
+
+distZip {
+    doLast {
+        archivePath.renameTo("$buildDir/" + jar.archiveName + '.zip');
+    }
+}
+
+task processLicense(type: Copy) {
+    from('resources/*.*') {
+      
+    }
+    into "$buildDir/tmp/license"
+}
+
+task processReleaseInfo(type: Copy) {
+	
+}
+compileJava.dependsOn(processReleaseInfo)
+
+
+jar {
+
+}
+
+task processDistributions(type: Copy){
+	doFirst {
+		println 'Creating directory for the new build.'
+	}	
+
+	into "$buildDir/latest"
+	
+	from jar
+	
+	into('license') {
+		from processLicense
+	}
+	
+	into('lib') {
+		from configurations.compile
+	}
+		
+	into('templates') {
+		from 'resources/templates'
+	}
+}
+
+distributions.main.contents {
+    from processDistributions
+    into '/'
+}
+
+task cleanupUnnecessaryFiles(type: Delete) {
+	doFirst {
+		println 'Cleaning up unnecessary files.'	
+	}
+	delete "$buildDir/libs"
+	delete "$buildDir/classes"
+	delete "$buildDir/generated"
+	delete "$buildDir/resources"
+	delete "$buildDir/tmp"
+	delete "$buildDir/distributions"
+}
+
+build.finalizedBy(cleanupUnnecessaryFiles)
+

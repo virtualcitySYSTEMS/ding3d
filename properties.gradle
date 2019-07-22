@@ -1,0 +1,4 @@
+ext {
+    libraryName = 'ding3d'
+    libraryVersion = '1.5.4'
+}
