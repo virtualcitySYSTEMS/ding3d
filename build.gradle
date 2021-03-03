@@ -1,0 +1,104 @@
+plugins {
+    id 'java-library'
+    id "org.ajoberstar.grgit" version "3.1.1"
+    id 'maven-publish'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+ext {
+    buildDate = new Date()
+
+    name = 'ding3d'
+
+    versionMajor = 1
+    versionMinor = 5
+    buildNumber = 5
+}
+
+
+repositories {
+    jcenter()
+}
+
+dependencies {  
+}
+
+def artifactVersion
+def tagName
+
+
+task initVariables {
+    artifactVersion = project.versionMajor + '.' + project.versionMinor + "." + project.buildNumber    
+}
+
+group = 'javax.media'
+version = artifactVersion
+
+task processLicense(type: Copy) {
+    from('COPYRIGHT.TXT') {
+        filteringCharset = 'UTF-8'
+    }
+    from('LICENSE-UTILS.TXT') {
+        filteringCharset = 'UTF-8'
+    }
+    from('LICENSE.TXT') {
+        filteringCharset = 'UTF-8'
+    }
+    from('README-FIRST.TXT') {
+        filteringCharset = 'UTF-8'
+    }
+    from('THIRDPARTY-LICENSE-DISTANCE.TXT') {
+        filteringCharset = 'UTF-8'
+    }
+    from('THIRDPARTY-LICENSE-FIST.TXT') {
+        filteringCharset = 'UTF-8'
+    }
+    from('THIRDPARTY-LICENSE-MAINFRAME.TXT') {
+        filteringCharset = 'UTF-8'
+    }
+    into "$buildDir/tmp/license"
+}
+
+jar {
+    manifest {
+    	doFirst {
+    		println 'Creating '  + jar.archiveName + ' file.'
+    	}
+
+    	def userName = System.properties['user.name']
+        attributes(
+		   'Built-Id': userName + '-' + project.name + '-' + artifactVersion,
+		   'Built-Date': project.buildDate.format('yyyy-MM-dd HH:mm:ss'),
+		   'Implementation-Title': project.name,
+           'Implementation-Version': artifactVersion
+         )
+    }
+    into('META-INF') {
+        from processLicense
+    }
+}
+
+
+publishing {
+    publications {
+        library(MavenPublication) {
+          groupId group
+      	  artifactId project.name
+          version project.versionMajor + '.' + project.versionMinor + "." + buildNumber
+        
+          from components.java
+        }
+    }
+	 
+	 repositories {
+	    maven {
+	      credentials {
+	        username mavenUser
+	        password mavenPassword
+	      }
+	      url = "http://artifactory/artifactory/libs-release-local"
+	    }
+    }
+}
+
